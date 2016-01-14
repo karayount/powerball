@@ -2,9 +2,12 @@
 followed by the powerball number, ticket purchaser, and ticked id, then sees
 if they won the powerball with any of the possible winning combinations"""
 
-all_plays = []
+import sys
 
-with open("powerball_tickets.txt") as tickets:
+all_plays = []
+input_file = sys.argv[1]
+
+with open(input_file) as tickets:
     for line in tickets:
         regular_balls = set()
         sheet = 0
@@ -32,32 +35,26 @@ jackpot = 0
 for play in range(0, len(all_plays)):
     if all_plays[play][1] == winning_power_ball:
         matches = winning_regular_balls & all_plays[play][0]
-        print "The Power Ball and", len(matches), "others match on ticket", all_plays[play][3], "which belongs to", all_plays[play][2]
-        if all_plays[play][2] == "us":
-            if len(matches) == 0:
-                just_power += 1
-            elif len(matches) == 1:
-                power_1 += 1
-            elif len(matches) == 2:
-                power_2 += 1
-            elif len(matches) == 3:
-                power_3 += 1
-            elif len(matches) == 4:
-                power_4 += 1
-            elif len(matches) == 5:
-                jackpot += 1
+        if len(matches) == 0:
+            just_power += 1
+        elif len(matches) == 1:
+            power_1 += 1
+        elif len(matches) == 2:
+            power_2 += 1
+        elif len(matches) == 3:
+            power_3 += 1
+        elif len(matches) == 4:
+            power_4 += 1
+        elif len(matches) == 5:
+            jackpot += 1
     else:
         matches = winning_regular_balls & all_plays[play][0]
         if len(matches) > 2:
-            print len(matches), "non-Power balls match on ticket", all_plays[play][3], "which belongs to", all_plays[play][2]
-        if all_plays[play][2] == "us":
-            if len(matches) == 3:
-                just_3 += 1
-            elif len(matches) == 4:
-                just_4 += 1
-            elif len(matches) == 5:
-                just_5 += 1
-print "Steffen's wins: "
+            just_3 += 1
+        elif len(matches) == 4:
+            just_4 += 1
+        elif len(matches) == 5:
+            just_5 += 1
 print "Jackpots:", jackpot
 print "Powerball plus 4:", power_4
 print "Powerball plus 3:", power_3
